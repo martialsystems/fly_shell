@@ -216,7 +216,7 @@ MEASURE_JS = r"""
     const t0 = performance.now();
     while (performance.now() - t0 < 8000) {
       const app = document.getElementById("app");
-      if (app && app.dataset.ready === "1" && window.FlyShell) return true;
+      if (app && app.dataset.ready === "1" && window.FlyShell && window.FlyShell.somaCount() > 1000) return true;
       await new Promise((r) => setTimeout(r, 50));
     }
     return false;
@@ -241,6 +241,12 @@ MEASURE_JS = r"""
   const pasteOpen = !document.getElementById("paste-box").hidden;
   document.getElementById("paste-cancel").click();
   const pasteClosed = document.getElementById("paste-box").hidden;
+  const fo = document.getElementById("firing-only");
+  fo.checked = true;
+  fo.dispatchEvent(new Event("change", { bubbles: true }));
+  const firingOnlyOn = fo.checked === true;
+  fo.checked = false;
+  fo.dispatchEvent(new Event("change", { bubbles: true }));
   await new Promise((r) => setTimeout(r, 300));
 
   const body = document.getElementById("body-canvas");
@@ -302,6 +308,8 @@ MEASURE_JS = r"""
     tabCount: tabs.length,
     pasteOpen, pasteClosed,
     boundEpg: ((mapping.channels || []).find((c) => c.id === "walk_fwd") || {}).from || [],
+    somaCount: window.FlyShell.somaCount(),
+    firingOnlyOn,
   };
 })()
 """
@@ -427,6 +435,16 @@ def main() -> None:
         bound = row.get("boundEpg") or []
         if "EPG_L" not in bound:
             print("FAIL: FlyShell.bind did not attach EPG_L to walk_fwd at", req, bound)
+            failed = True
+        if int(row.get("somaCount") or 0) != 141781:
+            print("FAIL: soma cloud count at", req, row.get("somaCount"))
+            failed = True
+        clock = str(row.get("clock") or "")
+        if "somas" not in clock:
+            print("FAIL: clock missing soma count at", req, clock)
+            failed = True
+        if not row.get("firingOnlyOn"):
+            print("FAIL: firing-only checkbox did not accept true at", req)
             failed = True
     if failed:
         raise SystemExit(2)

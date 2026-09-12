@@ -2,7 +2,7 @@
   "runtime_checks": [
     {
       "id": "node-contract",
-      "argv": ["node", "--test", "tests/mapping.test.js", "tests/import.test.js", "tests/atlas.test.js"],
+      "argv": ["node", "--test", "tests/mapping.test.js", "tests/import.test.js", "tests/atlas.test.js", "tests/soma.test.js"],
       "timeout_s": 60,
       "paths": ["js/**", "data/**", "tests/*.test.js", "package.json"]
     },

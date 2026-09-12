@@ -39,6 +39,11 @@ export class FlyShell {
     this.brain = new BrainView($("brain-canvas"));
     this.brain.setAtlas(this.atlas);
     this.brain.onPick = (id) => this.selectNeuron(id);
+    this.brain.loadCloud("data/malecns_soma.bin").then(() => {
+      $("app").dataset.somas = String(this.brain.somaCount);
+    }).catch((err) => {
+      $("import-status").textContent = String(err.message || err);
+    });
 
     this._wireUi();
     this._renderMap();
@@ -329,8 +334,11 @@ export class FlyShell {
 
   _paintStatus(frame, controls) {
     const nFire = firingIds(frame.neurons).length;
+    const somas = this.brain.somaCount
+      ? " · " + this.brain.somaCount.toLocaleString("en-US") + " somas"
+      : "";
     $("clock").textContent =
-      "t " + frame.t.toFixed(2) + " s · " + nFire + " firing";
+      "t " + frame.t.toFixed(2) + " s · " + nFire + " firing" + somas;
     $("hud").textContent = (frame.payload && frame.payload.hud) || "";
     for (const ch of this.mapping.channels) {
       const cell = document.querySelector('[data-val="' + ch.id + '"]');
@@ -417,5 +425,6 @@ export function installGlobal(shell) {
     },
     unbind: (neuronId, channelId) => shell.unbind(channelId, neuronId),
     atlas: () => shell.atlas,
+    somaCount: () => shell.brain.somaCount,
   };
 }

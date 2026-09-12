@@ -38,6 +38,27 @@ test("jump is silent under threshold", () => {
   assert.ok(high.jump > 0.8);
 });
 
+test("id match on a type name still sees LPLC2_L", () => {
+  const mapping = {
+    schema: "fly_shell.mapping.v1",
+    channels: [
+      {
+        id: "loom",
+        from: ["LPLC2"],
+        match: "id",
+        reduce: "max",
+        threshold: 0,
+        drive: "control",
+      },
+    ],
+  };
+  const controls = applyMapping(
+    { LPLC2_L: { id: "LPLC2_L", type: "LPLC2_L", rate: 0.77 } },
+    mapping,
+  );
+  assert.equal(controls.loom, 0.77);
+});
+
 test("LPLC2 prefix collects both lobes", () => {
   const controls = applyMapping(
     {

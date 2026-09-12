@@ -11,7 +11,16 @@ function collect(neurons, channel) {
   for (const src of from) {
     if (match === "id") {
       const n = neurons[src];
-      if (n) vals.push(n.rate);
+      if (n) {
+        vals.push(n.rate);
+        continue;
+      }
+      const bare = String(src).replace(/_[LR]$/, "");
+      for (const rec of list) {
+        const id = rec.id || "";
+        if (id === src || rec.type === src) vals.push(rec.rate);
+        else if (id.replace(/_[LR]$/, "") === bare) vals.push(rec.rate);
+      }
       continue;
     }
     for (const n of list) {
