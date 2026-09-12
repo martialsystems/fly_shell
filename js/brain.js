@@ -26,16 +26,16 @@ export class BrainView {
     this.canvas = canvas;
     this.scene = new THREE.Scene();
     this.scene.background = new THREE.Color(0x000000);
-    this.camera = new THREE.PerspectiveCamera(35, 1, 0.05, 40);
+    this.camera = new THREE.PerspectiveCamera(28, 1, 0.04, 40);
     this.renderer = new THREE.WebGLRenderer({ canvas, antialias: false, powerPreference: "high-performance" });
     this.renderer.setPixelRatio(1);
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     this.renderer.sortObjects = false;
 
     this.yaw = 0.0;
-    this.pitch = 0.18;
-    this.dist = 2.85;
-    this.look = new THREE.Vector3(0, 0.02, 0.32);
+    this.pitch = 0.12;
+    this.dist = 1.85;
+    this.look = new THREE.Vector3(0, 0.05, 0.38);
     this.dragging = false;
     this.lastX = 0;
     this.lastY = 0;
@@ -180,7 +180,7 @@ export class BrainView {
       "wheel",
       (e) => {
         e.preventDefault();
-        this.dist = Math.max(1.4, Math.min(8, this.dist + e.deltaY * 0.004));
+        this.dist = Math.max(0.45, Math.min(5.5, this.dist + e.deltaY * 0.0035));
       },
       { passive: false },
     );

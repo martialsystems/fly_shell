@@ -426,5 +426,10 @@ export function installGlobal(shell) {
     unbind: (neuronId, channelId) => shell.unbind(channelId, neuronId),
     atlas: () => shell.atlas,
     somaCount: () => shell.brain.somaCount,
+    cameraDist: () => shell.brain.dist,
+    wingScales: () => ({
+      L: shell.fly.joints.wing_L.scale.x,
+      R: shell.fly.joints.wing_R.scale.x,
+    }),
   };
 }

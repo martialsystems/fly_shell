@@ -257,10 +257,11 @@ export class FlyView {
       shape.bezierCurveTo(0.7, -0.12, 0.2, -0.08, 0, 0);
       const geo = new THREE.ShapeGeometry(shape);
       const w = mesh(geo, wingMat);
-      w.rotation.y = side * 0.15;
-      w.rotation.z = side * 0.35;
-      w.rotation.x = -0.2;
-      w.position.set(side * 0.08, 0.16, 0.02);
+      w.rotation.z = 0.32;
+      w.rotation.x = -0.18;
+      w.position.set(0.07, 0, 0);
+      g.position.set(0, 0.16, 0.04);
+      g.scale.x = side;
       g.add(w);
       thorax.add(g);
       return g;

@@ -310,6 +310,9 @@ MEASURE_JS = r"""
     boundEpg: ((mapping.channels || []).find((c) => c.id === "walk_fwd") || {}).from || [],
     somaCount: window.FlyShell.somaCount(),
     firingOnlyOn,
+    cameraDist: window.FlyShell.cameraDist(),
+    wingScales: window.FlyShell.wingScales(),
+    infoColor: getComputedStyle(document.getElementById("neuron-info")).color,
   };
 })()
 """
@@ -445,6 +448,19 @@ def main() -> None:
             failed = True
         if not row.get("firingOnlyOn"):
             print("FAIL: firing-only checkbox did not accept true at", req)
+            failed = True
+        dist = float(row.get("cameraDist") or 99)
+        if dist > 2.2:
+            print("FAIL: brain camera too far at", req, dist)
+            failed = True
+        wings = row.get("wingScales") or {}
+        if float(wings.get("L") or 0) >= 0 or float(wings.get("R") or 0) <= 0:
+            print("FAIL: wings not mirrored L/R at", req, wings)
+            failed = True
+        info = str(row.get("infoColor") or "")
+        nums = [int(p) for p in info.replace(",", " ").replace("(", " ").replace(")", " ").split() if p.isdigit()]
+        if len(nums) >= 3 and nums[2] >= nums[0]:
+            print("FAIL: neuron-info still as blue as the somas at", req, info)
             failed = True
     if failed:
         raise SystemExit(2)
