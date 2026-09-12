@@ -1,0 +1,43 @@
+{
+  "schema": "fly_shell.v1",
+  "mapping": {
+    "schema": "fly_shell.mapping.v1",
+    "channels": [
+      {
+        "id": "fire",
+        "label": "fire",
+        "from": ["DNp01"],
+        "match": "id",
+        "reduce": "max",
+        "threshold": 0.5,
+        "drive": "control"
+      },
+      {
+        "id": "move",
+        "label": "move",
+        "from": ["DNp09"],
+        "match": "id",
+        "reduce": "max",
+        "threshold": 0.1,
+        "drive": "gait:walk"
+      }
+    ]
+  },
+  "frames": [
+    {
+      "t": 0,
+      "neurons": { "DNp09": 0.5, "DNp01": 0.0 },
+      "payload": { "hud": "move" }
+    },
+    {
+      "t": 0.8,
+      "neurons": { "DNp09": 0.6, "DNp01": 0.85 },
+      "payload": { "hud": "fire" }
+    },
+    {
+      "t": 1.4,
+      "neurons": { "DNp09": 0.4, "DNp01": 0.1 },
+      "payload": { "hud": "move" }
+    }
+  ]
+}

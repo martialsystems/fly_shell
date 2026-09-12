@@ -1,0 +1,9 @@
+{
+  "name": "fly_shell",
+  "private": true,
+  "type": "module",
+  "description": "Empty box for a fly CNS: 3D body, neuron map, neuron-to-control mapping.",
+  "scripts": {
+    "test": "node --test tests/*.test.js"
+  }
+}

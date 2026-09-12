@@ -1,0 +1,1 @@
+Empty box for the fly CNS: 3D body on a grid, neuron map, neuron-to-control mapping. Plug any stream.

@@ -1,0 +1,45 @@
+{
+  "schema": "fly_shell.v1",
+  "frames": [
+    {
+      "t": 0,
+      "neurons": { "EPG_L": 0.1, "EPG_R": 0.1 },
+      "payload": { "hud": "idle" }
+    },
+    {
+      "t": 0.4,
+      "neurons": {
+        "LPLC2_L": 0.55,
+        "LPLC2_R": 0.6,
+        "LC4_L": 0.4,
+        "LC4_R": 0.4
+      },
+      "payload": { "hud": "loom" }
+    },
+    {
+      "t": 0.9,
+      "neurons": {
+        "LPLC2_L": 0.95,
+        "LPLC2_R": 0.95,
+        "DNp01": 0.2
+      },
+      "payload": { "hud": "loom" }
+    },
+    {
+      "t": 1.15,
+      "neurons": {
+        "DNp01": 0.95,
+        "TTM_L": 0.9,
+        "TTM_R": 0.9,
+        "LPLC2_L": 0.4,
+        "LPLC2_R": 0.4
+      },
+      "payload": { "hud": "jump" }
+    },
+    {
+      "t": 1.6,
+      "neurons": { "DNp01": 0.1, "EPG_L": 0.1 },
+      "payload": { "hud": "landed" }
+    }
+  ]
+}

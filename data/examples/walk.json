@@ -1,0 +1,40 @@
+{
+  "schema": "fly_shell.v1",
+  "frames": [
+    {
+      "t": 0,
+      "neurons": {
+        "DNp09": 0.7,
+        "BDN2": 0.35,
+        "L1_FeMN": 0.4,
+        "R2_FeMN": 0.5,
+        "L3_FeMN": 0.45,
+        "EPG_L": 0.2
+      },
+      "payload": { "hud": "imported walk" }
+    },
+    {
+      "t": 1.2,
+      "neurons": {
+        "DNp09": 0.82,
+        "BDN2": 0.4,
+        "R1_FeMN": 0.6,
+        "L2_FeMN": 0.55,
+        "R3_FeMN": 0.5,
+        "EPG_R": 0.22
+      },
+      "payload": { "hud": "imported walk" }
+    },
+    {
+      "t": 2.4,
+      "neurons": {
+        "DNp09": 0.6,
+        "BDN2": 0.3,
+        "L1_FeMN": 0.5,
+        "R2_FeMN": 0.4,
+        "L3_FeMN": 0.55
+      },
+      "payload": { "hud": "imported walk" }
+    }
+  ]
+}

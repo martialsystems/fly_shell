@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>fly_shell</title>
+  <meta name="description" content="Empty box for a fly CNS: 3D body on a grid, neuron map, neuron-to-control mapping. Plug any stream." />
+  <meta name="theme-color" content="#07080c" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="css/shell.css" />
+</head>
+<body>
+  <div id="app">
+    <header>
+      <div class="brand">
+        <h1>fly_shell</h1>
+        <p class="lede">Same brain. Empty box. Map firing cells to controls, then plug a stream.</p>
+      </div>
+      <div id="clock">t 0.00 s · 0 firing</div>
+    </header>
+
+    <nav class="view-tabs" aria-label="Panels">
+      <button type="button" class="on" data-pane-btn="body">Body</button>
+      <button type="button" data-pane-btn="brain">Neurons</button>
+      <button type="button" data-pane-btn="map">Map</button>
+    </nav>
+
+    <section id="pane-body" class="active" data-pane="body">
+      <canvas id="body-canvas" aria-label="3D fly on a grid"></canvas>
+      <div id="hud"></div>
+      <div id="drop">drop JSON on the grid</div>
+    </section>
+
+    <div id="side">
+      <section id="pane-brain" data-pane="brain">
+        <canvas id="brain-canvas" aria-label="Neuron map"></canvas>
+        <div id="neuron-info">click a cell</div>
+      </section>
+      <section id="pane-map" data-pane="map">
+        <h2>Map neurons to controls</h2>
+        <div class="map-scroll">
+          <table id="map-table"></table>
+        </div>
+        <div class="bind-row">
+          <span>bind selected to <strong id="bind-target">walk_fwd</strong></span>
+          <button type="button" class="btn primary" id="bind-add">Bind</button>
+          <label class="check"><input type="checkbox" id="firing-only" /> firing only</label>
+        </div>
+        <form id="new-channel" class="new-row">
+          <input type="text" id="new-channel-id" placeholder="new control id" autocomplete="off" />
+          <button type="submit" class="btn">Add control</button>
+        </form>
+      </section>
+    </div>
+
+    <footer>
+      <label>Plug
+        <select id="adapter"></select>
+      </label>
+      <span id="plug-label">Idle</span>
+      <button type="button" class="btn" id="btn-pause">Pause</button>
+      <button type="button" class="btn" id="btn-reset">Reset</button>
+      <label class="btn">Import
+        <input type="file" id="file" accept=".json,.ndjson,.jsonl,application/json" hidden />
+      </label>
+      <button type="button" class="btn" id="btn-paste">Paste JSON</button>
+      <span id="import-status"></span>
+    </footer>
+  </div>
+
+  <div id="paste-box" hidden>
+    <p>Paste a <code>fly_shell.v1</code> frame, a <code>frames</code> pack, or NDJSON.</p>
+    <textarea id="paste-text" spellcheck="false"></textarea>
+    <div class="paste-actions">
+      <button type="button" class="btn primary" id="paste-go">Load</button>
+      <button type="button" class="btn" id="paste-cancel">Cancel</button>
+    </div>
+  </div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

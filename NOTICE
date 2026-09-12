@@ -1,0 +1,9 @@
+fly_shell
+Copyright (c) 2026 Martial Systems LLC
+
+This tree vendors three.module.js (Three.js r160, MIT License,
+copyright Three.js authors). See vendor/three.module.js.
+
+Named cell types in the default atlas are public labels from the
+adult Drosophila CNS literature (FlyWire, MaleCNS / Janelia). Positions
+in this shell are schematic. They are not EM reconstruction coordinates.

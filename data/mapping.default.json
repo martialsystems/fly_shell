@@ -1,0 +1,95 @@
+{
+  "schema": "fly_shell.mapping.v1",
+  "channels": [
+    {
+      "id": "walk_fwd",
+      "label": "walk forward",
+      "from": ["DNp09", "BDN2"],
+      "match": "id",
+      "reduce": "max",
+      "threshold": 0.12,
+      "drive": "gait:walk"
+    },
+    {
+      "id": "walk_back",
+      "label": "walk back",
+      "from": ["MDN"],
+      "match": "id",
+      "reduce": "max",
+      "threshold": 0.12,
+      "drive": "gait:retreat"
+    },
+    {
+      "id": "steer_l",
+      "label": "steer left",
+      "from": ["DNa02_L", "DNg13_L"],
+      "match": "id",
+      "reduce": "mean",
+      "threshold": 0,
+      "drive": "steer"
+    },
+    {
+      "id": "steer_r",
+      "label": "steer right",
+      "from": ["DNa02_R", "DNg13_R"],
+      "match": "id",
+      "reduce": "mean",
+      "threshold": 0,
+      "drive": "steer"
+    },
+    {
+      "id": "jump",
+      "label": "jump",
+      "from": ["DNp01"],
+      "match": "id",
+      "reduce": "max",
+      "threshold": 0.4,
+      "drive": "gait:jump"
+    },
+    {
+      "id": "halt",
+      "label": "halt",
+      "from": ["BB", "FG"],
+      "match": "id",
+      "reduce": "max",
+      "threshold": 0.25,
+      "drive": "gait:idle"
+    },
+    {
+      "id": "feed",
+      "label": "feed",
+      "from": ["MN9"],
+      "match": "id",
+      "reduce": "max",
+      "threshold": 0.2,
+      "drive": "gait:feed"
+    },
+    {
+      "id": "loom",
+      "label": "loom",
+      "from": ["LPLC2"],
+      "match": "prefix",
+      "reduce": "max",
+      "threshold": 0,
+      "drive": "control"
+    },
+    {
+      "id": "sugar",
+      "label": "sugar",
+      "from": ["Gr5a", "LB3b", "PhG1a"],
+      "match": "id",
+      "reduce": "max",
+      "threshold": 0,
+      "drive": "control"
+    },
+    {
+      "id": "flight",
+      "label": "flight",
+      "from": ["DLM", "DVM"],
+      "match": "prefix",
+      "reduce": "mean",
+      "threshold": 0.3,
+      "drive": "gait:flight"
+    }
+  ]
+}

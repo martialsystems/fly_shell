@@ -1,0 +1,22 @@
+{
+  "runtime_checks": [
+    {
+      "id": "node-contract",
+      "argv": ["node", "--test", "tests/mapping.test.js", "tests/import.test.js", "tests/atlas.test.js"],
+      "timeout_s": 60,
+      "paths": ["js/**", "data/**", "tests/*.test.js", "package.json"]
+    },
+    {
+      "id": "readme-claims",
+      "argv": ["python3.12", "-m", "unittest", "discover", "-s", "tests", "-p", "test_*.py"],
+      "timeout_s": 30,
+      "paths": ["README.md", "index.html", "AGENTS.md", "description.txt", "js/atlas.js"]
+    },
+    {
+      "id": "viewport",
+      "argv": ["python3.12", "scripts/viewport_sanity.py"],
+      "timeout_s": 90,
+      "paths": ["index.html", "css/**", "js/**"]
+    }
+  ]
+}
