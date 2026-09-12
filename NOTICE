@@ -7,7 +7,7 @@ copyright Three.js authors). See vendor/three.module.js.
 Named cell types in the default atlas are public labels from the
 adult Drosophila CNS literature (FlyWire, MaleCNS / Janelia).
 
-`data/malecns_soma.bin` stores 141,781 MaleCNS v1 somaLocation points
-(HHMI Janelia and partners, CC BY 4.0), axis-flipped into the shell
-frame. They are cell-body positions, not neuron meshes and not a live
-whole-CNS simulation.
+`data/malecns_soma.bin` stores a 1,500-soma sample of MaleCNS v1
+somaLocation points (HHMI Janelia and partners, CC BY 4.0),
+axis-flipped into the shell frame. They are cell-body positions.
+

@@ -184,7 +184,7 @@ export class BrainView {
     geo.setAttribute("color", new THREE.BufferAttribute(this.liveColors, 3));
     geo.computeBoundingSphere();
     const mat = new THREE.PointsMaterial({
-      size: 2.2,
+      size: 4.4,
       sizeAttenuation: true,
       vertexColors: true,
       transparent: true,

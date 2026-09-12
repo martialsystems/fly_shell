@@ -13,7 +13,7 @@ Override only when the user asks for a sketch, prototype, or lower bar.
 
 ## Product
 
-`fly_shell` is an empty chassis: 3D fly on a grid, neuron map, mapping table, plug slot. The default atlas uses FlyWire / MaleCNS type labels. The dense map is 141,781 MaleCNS v1 soma positions as one Points draw (`data/malecns_soma.bin`). Named cells without a soma stay schematic. Do not add one Mesh per soma. Rebuild the bin only with `scripts/pack_malecns_soma.py` and restamp the locked count in tests and README.
+`fly_shell` is an empty chassis: 3D fly on a grid, neuron map, mapping table, plug slot. The default atlas uses FlyWire / MaleCNS type labels. The live map is a 1,500-soma sample of MaleCNS v1 positions as one Points draw (`data/malecns_soma.bin`). Named cells without a soma stay schematic. Do not add one Mesh per soma. Do not load the unsampled 141,781-point cloud on the page. Rebuild with `scripts/pack_malecns_soma.py` (default `--n 1500`) and restamp the locked count in tests and README.
 
 Claim bans (fail the public copy, not the mapping engine):
 
