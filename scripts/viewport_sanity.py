@@ -436,7 +436,7 @@ def main() -> None:
         if "EPG_L" not in bound:
             print("FAIL: FlyShell.bind did not attach EPG_L to walk_fwd at", req, bound)
             failed = True
-        if int(row.get("somaCount") or 0) != 1500:
+        if int(row.get("somaCount") or 0) != 141781:
             print("FAIL: soma cloud count at", req, row.get("somaCount"))
             failed = True
         clock = str(row.get("clock") or "")

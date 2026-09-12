@@ -4,7 +4,7 @@ Empty box for the adult fly CNS. Same named cells as FlyWire and MaleCNS. You pl
 
 Left: a 3D fly on a grid. Drop a pose, a gait, or a `fly_shell.v1` timeline and the body plays it. If you send rates instead of joints, the default map turns firing cells into walk, steer, jump, halt, feed, and flight.
 
-Right: 1,500 MaleCNS somas as one GPU point cloud, sampled so the CNS shape still reads. Gold is rate. Click a soma (or a named overlay cell) and bind it to a control.
+Right: 141,781 MaleCNS somas as one-pixel GPU points (optic lobes cyan, projection neurons orange). Gold is rate. Click a soma and bind it to a control.
 
 The map is the product. The demos are plugs.
 
@@ -13,7 +13,7 @@ The map is the product. The demos are plugs.
 A browser chassis with three slots:
 
 1. Body viewport: grid plus Drosophila rig. Import joints, or let mapped channels drive a tripod gait.
-2. Neuron map: 1,500 MaleCNS v1 `somaLocation` points in one `THREE.Points` draw (named motor/sensory types kept, the rest voxel-sampled). Named cells without a recorded soma stay on the schematic overlay. Gold is rate. Click binds.
+2. Neuron map: 141,781 MaleCNS v1 `somaLocation` points as one 1-pixel `Points` draw. No volume hull. Gold is rate. Click binds.
 3. Mapping table: neuron id, type, or prefix → named control, reduced with max / mean / sum / any.
 
 `window.FlyShell` is the plug API.
@@ -79,7 +79,7 @@ Copied from `data/mapping.default.json`:
 | sugar | Gr5a, LB3b, PhG1a | max |
 | flight | DLM, DVM prefix | mean |
 
-The cloud is a 1,500-soma sample of MaleCNS v1 soma positions (CC BY 4.0), axis-flipped into the shell frame. Named overlay source is `schematic` when a type has no soma. Overlay extra xyz with an `atlas` object in the pack (`mergeAtlas`).
+The cloud is MaleCNS v1 soma positions (CC BY 4.0), axis-flipped into the shell frame, drawn as 1-pixel points. Named atlas source is `schematic` for cells the pack does not list. Overlay extra xyz with an `atlas` object in the pack (`mergeAtlas`).
 
 ## How to run
 
@@ -107,7 +107,7 @@ Three.js r160 is vendored at `vendor/three.module.js`. No CDN on the page.
 | `js/mapping.js` | Bind / reduce |
 | `js/atlas.js` | Named-cell schematic |
 | `js/soma.js` | FSMP soma pack parser |
-| `data/malecns_soma.bin` | 1,500 MaleCNS soma sample |
+| `data/malecns_soma.bin` | 141,781 MaleCNS soma positions, FSMP v2 |
 | `js/fly.js` | Body viewport |
 | `js/brain.js` | Neuron map |
 | `js/import.js` | JSON / NDJSON pack |

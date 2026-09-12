@@ -5,9 +5,9 @@ Reads the local annotations feather (default: fly_chess malecns_v1) and writes
 data/malecns_soma.bin. Positions are translated into the shell view frame:
 +x right, +y up, +z anterior (brain), VNC toward -z.
 
-Default is a 1,500-soma sample: keep named motor/sensory types, then fill
-with a voxel subsample so the CNS shape still reads. Pass --n 0 for every
-recorded soma (too heavy for the live page).
+Default `--n 0` packs every recorded soma as a structure-of-arrays blob
+the page uploads in one Points draw (1-pixel dots, no hull). Pass a
+positive `--n` only for a voxel sample.
 """
 
 from __future__ import annotations
@@ -24,7 +24,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_FEATHER = Path.home() / "fly_chess/data/malecns/malecns_v1/annotations.feather"
 OUT = ROOT / "data" / "malecns_soma.bin"
 MAGIC = b"FSMP"
-VERSION = 1
+VERSION = 2
 
 CLASS = {
     "ol_intrinsic": 1,
@@ -38,7 +38,7 @@ CLASS = {
     "cb_motor": 9,
 }
 
-DISPLAY_N = 1500
+DISPLAY_N = 0
 KEEP_CAP = {
     "DNp01": 4,
     "DNp02": 4,
@@ -175,9 +175,16 @@ def subsample(view: np.ndarray, types: list[str], n: int, seed: int = 1) -> np.n
     return np.sort(picked)
 
 
+def _pad4(fh) -> None:
+    n = fh.tell() % 4
+    if n:
+        fh.write(b"\x00" * (4 - n))
+
+
 def write_bin(path: Path, view: np.ndarray, types: list[str], cls: np.ndarray) -> None:
     uniq = sorted(set(types))
     type_id = {name: i for i, name in enumerate(uniq)}
+    ids = np.fromiter((type_id[t] for t in types), dtype=np.uint16, count=len(types))
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("wb") as fh:
         fh.write(MAGIC)
@@ -189,18 +196,11 @@ def write_bin(path: Path, view: np.ndarray, types: list[str], cls: np.ndarray) -
                 raw = raw[:65535]
             fh.write(struct.pack("<H", len(raw)))
             fh.write(raw)
-        rec = struct.Struct("<fffBBH")
-        for i in range(view.shape[0]):
-            fh.write(
-                rec.pack(
-                    float(view[i, 0]),
-                    float(view[i, 1]),
-                    float(view[i, 2]),
-                    int(cls[i]),
-                    0,
-                    type_id[types[i]],
-                )
-            )
+        _pad4(fh)
+        fh.write(np.ascontiguousarray(view, dtype=np.float32).tobytes())
+        fh.write(np.ascontiguousarray(cls, dtype=np.uint8).tobytes())
+        _pad4(fh)
+        fh.write(np.ascontiguousarray(ids, dtype=np.uint16).tobytes())
 
 
 def main() -> int:

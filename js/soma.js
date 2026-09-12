@@ -1,20 +1,20 @@
-/** MaleCNS soma cloud pack (FSMP v1). DOM-free so node tests hit this file. */
+/** MaleCNS soma cloud pack (FSMP v2, structure-of-arrays). DOM-free. */
 
 export const SOMA_MAGIC = "FSMP";
-export const SOMA_VERSION = 1;
-export const SOMA_RECORD = 16;
+export const SOMA_VERSION = 2;
 
+/** Optic lobes cyan, central brain dark blue, projection neurons orange. */
 export const CLASS_COLORS = {
-  0: [0.22, 0.32, 0.40],
-  1: [0.24, 0.78, 1.00],
-  2: [0.83, 0.63, 1.00],
-  3: [0.49, 0.88, 1.00],
-  4: [0.40, 0.90, 0.70],
-  5: [1.00, 0.84, 0.42],
-  6: [1.00, 0.54, 0.83],
-  7: [0.95, 0.55, 0.25],
-  8: [0.45, 0.75, 0.95],
-  9: [0.90, 0.70, 0.40],
+  0: [0.18, 0.32, 0.42],
+  1: [0.22, 0.78, 0.95],
+  2: [0.10, 0.38, 0.62],
+  3: [0.16, 0.48, 0.58],
+  4: [0.95, 0.52, 0.18],
+  5: [1.00, 0.72, 0.28],
+  6: [0.95, 0.45, 0.70],
+  7: [0.90, 0.58, 0.22],
+  8: [0.35, 0.72, 0.90],
+  9: [0.85, 0.62, 0.30],
 };
 
 export function stripSide(id) {
@@ -22,8 +22,13 @@ export function stripSide(id) {
   return s.replace(/_[LR]$/, "");
 }
 
+function align4(n) {
+  return (n + 3) & ~3;
+}
+
 export function parseSomaPack(buf) {
-  const bytes = buf instanceof ArrayBuffer ? new Uint8Array(buf) : new Uint8Array(buf.buffer, buf.byteOffset, buf.byteLength);
+  const src = buf instanceof ArrayBuffer ? new Uint8Array(buf) : new Uint8Array(buf.buffer, buf.byteOffset, buf.byteLength);
+  const bytes = src.byteOffset === 0 ? src : src.slice();
   if (bytes.byteLength < 24) throw new Error("soma pack too small");
   const magic = String.fromCharCode(bytes[0], bytes[1], bytes[2], bytes[3]);
   if (magic !== SOMA_MAGIC) throw new Error("soma magic " + magic);
@@ -42,19 +47,16 @@ export function parseSomaPack(buf) {
     types.push(decoder.decode(bytes.subarray(off, off + n)));
     off += n;
   }
-  const need = off + count * SOMA_RECORD;
-  if (bytes.byteLength < need) throw new Error("soma records truncated");
-  const positions = new Float32Array(count * 3);
-  const classes = new Uint8Array(count);
-  const typeIds = new Uint16Array(count);
-  for (let i = 0; i < count; i++) {
-    const rec = off + i * SOMA_RECORD;
-    positions[i * 3] = view.getFloat32(rec, true);
-    positions[i * 3 + 1] = view.getFloat32(rec + 4, true);
-    positions[i * 3 + 2] = view.getFloat32(rec + 8, true);
-    classes[i] = view.getUint8(rec + 12);
-    typeIds[i] = view.getUint16(rec + 14, true);
-  }
+  off = align4(off);
+  const posBytes = count * 12;
+  if (off + posBytes > bytes.byteLength) throw new Error("soma positions truncated");
+  const positions = new Float32Array(bytes.buffer, bytes.byteOffset + off, count * 3);
+  off += posBytes;
+  if (off + count > bytes.byteLength) throw new Error("soma classes truncated");
+  const classes = new Uint8Array(bytes.buffer, bytes.byteOffset + off, count);
+  off = align4(off + count);
+  if (off + count * 2 > bytes.byteLength) throw new Error("soma type ids truncated");
+  const typeIds = new Uint16Array(bytes.buffer, bytes.byteOffset + off, count);
   return { count, types, positions, classes, typeIds };
 }
 
